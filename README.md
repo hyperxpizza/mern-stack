@@ -10,3 +10,8 @@ Due to my personal hate towards javascript and npm this code may not be of the h
 Sincerely,
 hyperxpizza
 ```
+
+## How to run?
+```
+docker-compose up -d
+```
