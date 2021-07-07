@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
 
 const Dashboard = () => {
 
     const [user, setUser] = useState();
-
-    /*
-    useEffect(() => {
-
-    });
-    */
    
     const handleLogout = () => {
         console.log("logout");
