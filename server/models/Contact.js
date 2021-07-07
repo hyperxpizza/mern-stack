@@ -4,14 +4,13 @@ const schema = mongoose.Schema({
     lastName: String,
     streetNumber: String,
     city: String,
+    zip: String,
     state: String,
     country: String,
     isPublic: Boolean,
     owner: String,
-    geoCords: {
-        lat: String,
-        lon: String
-    },
+    lat: String,
+    lon: String, 
     createdAt: String,
     modifiedAt: String
 });
