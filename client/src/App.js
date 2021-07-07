@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Dashboard from "./Pages/Dashboard";
 import Login from "./Pages/Login";
+import ContactPage from "./Pages/ContactPage";
 import useToken from "./Components/useToken";
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Dashboard />
+          </Route>
+          <Route exact path="/add">
+            <ContactPage />
           </Route>
         </Switch>
       </BrowserRouter>

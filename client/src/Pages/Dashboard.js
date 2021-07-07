@@ -5,9 +5,8 @@ const Dashboard = () => {
     const handleLogout = () => {
         console.log("logout");
         localStorage.clear();
-        return <Redirect to="/login"/>
+        window.location.reload();
     }; 
-
 
     const showMyContacts = () => {
         console.log("show my contacts");
