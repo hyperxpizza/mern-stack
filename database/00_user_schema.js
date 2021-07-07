@@ -19,6 +19,10 @@ db.createCollection("users", {
                     bsonType: "string",
                     description: "string with hash of users password",
                 },
+                isAdmin: {
+                    bsonType: "bool",
+                    description: "true if user is an administrator"
+                },
                 createdAt: {
                     bsonType: "string",
                     description: "RFC3339 time stamp, that shows when the entry was last created.",

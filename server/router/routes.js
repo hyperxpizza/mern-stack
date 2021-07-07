@@ -30,6 +30,7 @@ router.post("/register", async (req, res) => {
         username: username,
         email: email,
         passwordHash: passwordHash,
+        isAdmin: false,
         createdAt: dn,
         updatedAt: dn
     });
