@@ -1,7 +1,16 @@
-import React, { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet'
+
 const Dashboard = () => {
 
+    const [user, setUser] = useState();
+
+    /*
+    useEffect(() => {
+
+    });
+    */
+   
     const handleLogout = () => {
         console.log("logout");
         localStorage.clear();
@@ -24,7 +33,7 @@ const Dashboard = () => {
         <div className="container" id="main-wrapper">
         <div className="row">
             <div className="col-md-6">
-                <h2 id="user-greeting"></h2>
+                <h2 id="user-greeting">Hello, {user.username}</h2>
             </div>
             <div className="col-md-6">
                 <button type="submit" className="btn btn-danger" onClick={handleLogout}>Logout</button>
@@ -32,9 +41,9 @@ const Dashboard = () => {
         </div> 
         <div className="row">
             <div className="col-md-6">
-                <div id="map">
-                    <p><a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a></p>
-                </div>
+                <MapContainer zoom={13} scrollWheelZoom={true}>
+                    <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                </MapContainer>
             </div>
             <div className="col-md-6">
                 <div className="row mb-4">
