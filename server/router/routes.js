@@ -1,4 +1,5 @@
 const express = require('express');
+const emailValidator = require("email-validator");
 const crypt = require('../utils/crypt.js');
 const auth = require('../utils/auth.js');
 const router = express.Router();
@@ -8,7 +9,13 @@ const User = require('../models/User.js');
 const Contact = require('../models/Contact.js')
 
 router.post("/register", async (req, res) => {
-    const { username, password1, password2 } = req.body;
+    const { username, email, password1, password2 } = req.body;
+
+    if(!emailValidator.validate(email)){
+        return res.status(400).json({
+            "message": "Email is not vallid",
+        });
+    }
 
     //validate input data
     if (password1 != password2) {
@@ -21,6 +28,7 @@ router.post("/register", async (req, res) => {
     const dn = Date.now().toString();
     const newUser = new User({
         username: username,
+        email: email,
         passwordHash: passwordHash,
         createdAt: dn,
         updatedAt: dn
@@ -57,6 +65,13 @@ router.post("/login", async (req, res) => {
     token = auth.generateToken(username);
     return res.status(200).json({
         "token": token,
+    });
+});
+
+router.get("/users", auth.authMiddleware, async (req, res) => {
+    let users = await User.find();
+    return res.status(200).json({
+        "users": users,
     });
 });
 
