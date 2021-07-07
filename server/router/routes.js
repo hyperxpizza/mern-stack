@@ -68,6 +68,13 @@ router.post("/login", async (req, res) => {
     });
 });
 
+
+router.get("/me", auth.authMiddleware, (req, res) => {
+    return res.status(200).json({
+        username: req.user.username
+    });
+});
+
 router.get("/users", auth.authMiddleware, async (req, res) => {
     let users = await User.find();
     return res.status(200).json({
