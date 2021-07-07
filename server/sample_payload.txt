@@ -1,0 +1,13 @@
+{
+    "firstName": "Wojtek",
+    "lastName": "Stegen",
+    "streetNumber": "Berliner Strasse 44",
+    "zip": "10173",
+    "city": "Berlin",
+    "state": "Berlin",
+    "country": "Germany",
+    "isPublic": false,
+    "owner": "admina",
+    "lat": "52.5606059",
+    "lon": "13.4123837"
+}

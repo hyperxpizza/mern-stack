@@ -1,0 +1,5 @@
+{
+"username": "some-user",
+"password1": "passwordblabla"
+"password2": "passwordblabla"
+}
