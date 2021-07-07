@@ -1,5 +1,6 @@
 const express = require('express');
 const crypt = require('../utils/crypt.js');
+const auth = require('../utils/auth.js');
 const router = express.Router();
 
 //database models
@@ -53,8 +54,9 @@ router.post("/login", async (req, res) => {
         return
     }
 
+    token = auth.generateToken(username);
     return res.status(200).json({
-        "token": "token123"
+        "token": token,
     });
 });
 
