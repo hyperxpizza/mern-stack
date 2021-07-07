@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
     });
 });
 
-router.post("/contacts", (req, res) => {
+router.post("/contacts", auth.authMiddleware, (req, res) => {
     const dn = Date.now().toString();
     const newContact = new Contact({
         firstName: req.body.firstName,
@@ -87,7 +87,7 @@ router.post("/contacts", (req, res) => {
     return res.status(201).send();
 });
 
-router.get("/contacts", async (req, res) => {
+router.get("/contacts", auth.authMiddleware, async (req, res) => {
     let owner = req.query.userid;
     console.log(owner);
     if(owner == "" || owner === undefined){
@@ -131,7 +131,7 @@ router.put("/contacts/:id", (req, res) => {
     return res.statusCode(204).send();
 });
 
-router.delete("/contacts/:id", (req, res) => {
+router.delete("/contacts/:id", auth.authMiddleware, (req, res) => {
     let id = req.params.id;
     if(id == "" || id === undefined){
         res.status(400).json({
