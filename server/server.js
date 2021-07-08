@@ -8,9 +8,9 @@ app.use(express.json());
 app.use(cors());
 const SERVER_PORT = process.env.SERVER_PORT;
 const DATABASE_PORT = process.env.DATABASE_PORT;
-console.log("Variables loaded from the .env file:");
-console.log(`SERVER_PORT: ${SERVER_PORT}`);
-console.log(`DATABASE_PORT: ${DATABASE_PORT}`);
+//console.log("Variables loaded from the .env file:");
+//console.log(`SERVER_PORT: ${SERVER_PORT}`);
+//console.log(`DATABASE_PORT: ${DATABASE_PORT}`);
 mongoose.connect(`mongodb://root:password@localhost:${DATABASE_PORT}/admin?authSource=admin&readPreference=primary&gssapiServiceName=mongodb&appname=MongoDB%20Compass&ssl=false`, 
 { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:true })
 .then(() => {

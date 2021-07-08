@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
         return
     }
 
-    token = auth.generateToken(username);
+    token = auth.generateToken(user.username, user.isAdmin);
     return res.status(200).json({
         "token": token,
     });
@@ -72,7 +72,8 @@ router.post("/login", async (req, res) => {
 
 router.get("/me", auth.authMiddleware, (req, res) => {
     return res.status(200).json({
-        username: req.user.username
+        username: req.user.username,
+        isAdmin: req.user.isAdmin
     });
 });
 
