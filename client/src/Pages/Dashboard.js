@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import {getAuthHeader} from '../Utils/authHeaders.js'
+import getAuthHeader from '../Utils/authHeaders.js'
 
 const Dashboard = () => {
 
     const [username, setUsername] = useState('');
     const [isAdmin, setIsAdmin] = useState();
-
-    const [contacts, setContacts] = useState();
+    const [userID, setUserID] = useState("");
+    const options = getAuthHeader();
+    //const [contacts, setContacts] = useState();
 
     useEffect(() => {
-        const options = getAuthHeader();
 
         axios.get('http://localhost:8080/api/me', options)
         .then((response) => {
             setUsername(response.data.username);
             setIsAdmin(response.data.isAdmin);
+            setUserID(response.data.id);
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
         })
 
-    }, [username, setUsername, isAdmin, setIsAdmin]);
-
-
-    const getMyContacts = () => {
-
-    }
+    }, [username, setUsername, isAdmin, setIsAdmin, userID, setUserID, options]);
 
     const handleLogout = () => {
         console.log("logout");
@@ -37,15 +34,23 @@ const Dashboard = () => {
     }; 
 
     const showMyContacts = () => {
-        console.log("show my contacts");
+        axios.get(`http://localhost:8080/api/contacts?owner?=${username}`, options)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((err) =>{
+            console.log(err);
+        });
     };
 
     const showAllContacts = () => {
-        console.log("show all contacts");
-    };
-
-    const addNewContact = () => {
-        console.log("add new contact");
+        axios.get('http://localhost:8080/api/contacts', options)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((err) =>{
+            console.log(err);
+        });
     };
 
     return(
@@ -77,7 +82,7 @@ const Dashboard = () => {
                 </div>
                 <div className="row mb-4">
                     <div className="col-md-12">
-                        <button className="btn btn-primary main-btn" onClick={addNewContact}>Add new contact</button>
+                        <Link to="/add" className="btn btn-primary main-btn" >Add new contact</Link>
                     </div>
                 </div>
             </div>

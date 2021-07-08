@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import getAuthHeader from '../Utils/authHeaders.js';
+import axios from 'axios';
 
 const ContactPage = ({isUserAdministrator}) => {
     
@@ -14,8 +16,7 @@ const ContactPage = ({isUserAdministrator}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-
+        const options = getAuthHeader();
         const payload = {
             firstName: firstName,
             lastName: lastName,
@@ -31,12 +32,19 @@ const ContactPage = ({isUserAdministrator}) => {
         };
 
         console.log(payload);
+
+        axios.post('http://localhost:8080/api/contacts', payload, options)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     const handleRedirectToDashboard = () => {
-        console.log("Redirecting to dashboard...")
+        
     };
-    
     
     return (
         <div className="container" id="add-contact-wrapper">
