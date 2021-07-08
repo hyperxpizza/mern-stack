@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const ContactPage = () => {
+const ContactPage = ({isUserAdministrator}) => {
     
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();

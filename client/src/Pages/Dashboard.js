@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
+import axios from 'axios';
+
+import {getAuthHeader} from '../Utils/authHeaders.js'
 
 const Dashboard = () => {
 
-    const [user, setUser] = useState();
-   
+    const [username, setUsername] = useState('');
+    const [isAdmin, setIsAdmin] = useState();
+
+    const [contacts, setContacts] = useState();
+
+    useEffect(() => {
+        const options = getAuthHeader();
+
+        axios.get('http://localhost:8080/api/me', options)
+        .then((response) => {
+            setUsername(response.data.username);
+            setIsAdmin(response.data.isAdmin);
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+    }, [username, setUsername, isAdmin, setIsAdmin]);
+
+
+    const getMyContacts = () => {
+
+    }
+
     const handleLogout = () => {
         console.log("logout");
         localStorage.clear();
@@ -27,7 +52,7 @@ const Dashboard = () => {
         <div className="container" id="main-wrapper">
         <div className="row">
             <div className="col-md-6">
-                <h2 id="user-greeting">Hello, {user.username}</h2>
+                <h2 id="user-greeting">Hello, {username}</h2>
             </div>
             <div className="col-md-6">
                 <button type="submit" className="btn btn-danger" onClick={handleLogout}>Logout</button>
