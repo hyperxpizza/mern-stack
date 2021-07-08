@@ -41,8 +41,7 @@ router.post("/register", async (req, res) => {
         }
         return res.status(201).json(u);
     });
-})
-
+});
 
 router.post("/login", async (req, res) => {
     console.log("[*] Login route...");
@@ -63,17 +62,17 @@ router.post("/login", async (req, res) => {
         return
     }
 
-    token = auth.generateToken(user.username, user.isAdmin);
+    token = auth.generateToken(user.username, user.isAdmin, user._id);
     return res.status(200).json({
         "token": token,
     });
 });
 
-
 router.get("/me", auth.authMiddleware, (req, res) => {
     return res.status(200).json({
         username: req.user.username,
-        isAdmin: req.user.isAdmin
+        isAdmin: req.user.isAdmin,
+        id: req.user.id
     });
 });
 
@@ -102,7 +101,7 @@ router.post("/contacts", auth.authMiddleware, (req, res) => {
 
     newContact.save(function(err) {
         if(err){
-            return res.statusCode(500)
+            return res.statusCode(500);
         }
     });
 
@@ -111,6 +110,7 @@ router.post("/contacts", auth.authMiddleware, (req, res) => {
     return res.status(201).send();
 });
 
+/*
 router.get("/contacts", auth.authMiddleware, async (req, res) => {
     let owner = req.query.userid;
     console.log(owner);
@@ -124,6 +124,37 @@ router.get("/contacts", auth.authMiddleware, async (req, res) => {
         return res.status(200).json({
             "contacts": contacts
         });
+    }
+});
+*/
+
+router.get("/contacts", auth.authMiddleware, async (req, res) => {
+    let query = req.query.owner
+    console.log(query);
+    if(query === undefined || query == ""){
+        if(req.user.isAdmin){
+            let contacts = await Contact.find();
+            return res.status(200).json({
+                "contacts": contacts
+            });
+        } else {
+            let contacts = await Contact.find({"isPublic": false});
+            return res.status(200).json({
+                "contacts": contacts
+            });
+        }
+    } else {
+        if(req.user.isAdmin){
+            let contacts = await Contact.find();
+            return res.status(200).json({
+                "contacts": contacts
+            });
+        } else {
+            let contacts = await Contact.find({"owner": query});
+            return res.status(200).json({
+                "contacts": contacts
+            });
+        }
     }
 });
 
@@ -175,7 +206,5 @@ router.delete("/contacts/:id", auth.authMiddleware, (req, res) => {
         return res.status(204).send();
     })
 });
-
-
 
 module.exports = router;
