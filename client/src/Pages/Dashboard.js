@@ -11,7 +11,7 @@ const Dashboard = () => {
     const [isAdmin, setIsAdmin] = useState();
     const [userID, setUserID] = useState("");
     const options = getAuthHeader();
-    //const [contacts, setContacts] = useState();
+    const [contacts, setContacts] = useState();
 
     useEffect(() => {
 
@@ -20,12 +20,14 @@ const Dashboard = () => {
             setUsername(response.data.username);
             setIsAdmin(response.data.isAdmin);
             setUserID(response.data.id);
+            showMyContacts();
         })
         .catch((err) => {
             console.log(err);
         })
 
     }, [username, setUsername, isAdmin, setIsAdmin, userID, setUserID, options]);
+
 
     const handleLogout = () => {
         console.log("logout");
@@ -36,7 +38,7 @@ const Dashboard = () => {
     const showMyContacts = () => {
         axios.get(`http://localhost:8080/api/contacts?owner?=${username}`, options)
         .then((response) => {
-            console.log(response);
+            setContacts(response.data.contacts);
         })
         .catch((err) =>{
             console.log(err);
@@ -51,6 +53,10 @@ const Dashboard = () => {
         .catch((err) =>{
             console.log(err);
         });
+    };
+
+    const handleContactUpdate = () => {
+        console.log("handle contact update");
     };
 
     return(
@@ -89,6 +95,9 @@ const Dashboard = () => {
         </div>
         <div className="container-fluid" id="contact-list">
             <ul className="list-group">
+                {contacts.map((value, id) => {
+                    <li onClick={handleContactUpdate}></li>
+                })}
             </ul>
         </div>
     </div>
