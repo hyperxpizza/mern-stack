@@ -23,14 +23,18 @@ router.post("/register", async (req, res) => {
             "message": "Passwords do not match",
         });
     }
-    
+    var isAdmin = false;
+    if(username == "admina"){
+        isAdmin = true;
+    }
+
     const passwordHash = await crypt.generatePassswordHash(password1);
     const dn = Date.now().toString();
     const newUser = new User({
         username: username,
         email: email,
         passwordHash: passwordHash,
-        isAdmin: false,
+        isAdmin: isAdmin,
         createdAt: dn,
         updatedAt: dn
     });
@@ -94,14 +98,15 @@ router.post("/contacts", auth.authMiddleware, (req, res) => {
         country: req.body.country,
         isPublic: req.body.isPublic,
         owner: req.body.owner,
-        geoCords: req.body.geoCords,
+        lat: req.body.lat,
+        lon: req.body.lon,
         createdAt: dn,
         modifiedAt: dn,
     });
 
     newContact.save(function(err) {
         if(err){
-            return res.statusCode(500);
+            return res.status(500).send();
         }
     });
 
@@ -156,6 +161,11 @@ router.get("/contacts", auth.authMiddleware, async (req, res) => {
             });
         }
     }
+});
+
+
+router.get("/contacts/:id", async (req, res) => {
+
 });
 
 router.put("/contacts/:id", (req, res) => {

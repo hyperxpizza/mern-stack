@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import getAuthHeader from '../Utils/authHeaders.js';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const ContactPage = ({isUserAdministrator}) => {
     
+    const history = useHistory();
+
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
     const [streetNumber, setStreetNumber] = useState();
@@ -15,6 +18,11 @@ const ContactPage = ({isUserAdministrator}) => {
     const [owner, setOwner] = useState();
 
     const handleSubmit = (e) => {
+
+        //convert isPublic checkbox
+        console.log(isPublic.checked);
+
+
         e.preventDefault();
         const options = getAuthHeader();
         const payload = {
@@ -31,11 +39,12 @@ const ContactPage = ({isUserAdministrator}) => {
             lon: ""
         };
 
-        console.log(payload);
-
         axios.post('http://localhost:8080/api/contacts', payload, options)
             .then((response) => {
                 console.log(response);
+                if(response.status === 201){
+                    handleRedirectToDashboard();
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -43,7 +52,7 @@ const ContactPage = ({isUserAdministrator}) => {
     };
 
     const handleRedirectToDashboard = () => {
-        
+        history.push("/");
     };
     
     return (

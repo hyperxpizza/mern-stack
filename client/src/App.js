@@ -8,6 +8,7 @@ import Dashboard from "./Pages/Dashboard";
 import Login from "./Pages/Login";
 import ContactPage from "./Pages/ContactPage";
 import useToken from "./Components/useToken";
+import UpdateContactPage from "./Pages/UpdateContactPage.js";
 
 function App() {
 
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route exact path="/add">
             <ContactPage />
+          </Route>
+          <Route exact path="/update">
+            <UpdateContactPage />
           </Route>
         </Switch>
       </BrowserRouter>

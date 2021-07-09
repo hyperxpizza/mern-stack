@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import getAuthHeader from '../Utils/authHeaders.js'
+import { useHistory } from 'react-router-dom';
 
 const Dashboard = () => {
 
@@ -11,7 +12,8 @@ const Dashboard = () => {
     const [isAdmin, setIsAdmin] = useState();
     const [userID, setUserID] = useState("");
     const options = getAuthHeader();
-    const [contacts, setContacts] = useState();
+    const history = useHistory();
+    const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
 
@@ -20,13 +22,20 @@ const Dashboard = () => {
             setUsername(response.data.username);
             setIsAdmin(response.data.isAdmin);
             setUserID(response.data.id);
-            showMyContacts();
         })
         .catch((err) => {
             console.log(err);
         })
 
-    }, [username, setUsername, isAdmin, setIsAdmin, userID, setUserID, options]);
+        axios.get(`http://localhost:8080/api/contacts?owner=${username}`, options)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+
+    }, [username, setUsername, isAdmin, setIsAdmin, userID, setUserID, options, contacts, setContacts]);
 
 
     const handleLogout = () => {
@@ -55,8 +64,8 @@ const Dashboard = () => {
         });
     };
 
-    const handleContactUpdate = () => {
-        console.log("handle contact update");
+    const handleContactUpdate = (id) => {
+        history.push({pathname: "/update", state: {id:id}});
     };
 
     return(
@@ -95,9 +104,9 @@ const Dashboard = () => {
         </div>
         <div className="container-fluid" id="contact-list">
             <ul className="list-group">
-                {contacts.map((value, id) => {
-                    <li onClick={handleContactUpdate}></li>
-                })}
+                {contacts.map(data =>(
+                    <li className="list-group-item" key={data._id} onClick={handleContactUpdate(data._id)}>{data.firstName} {data.lastName}</li>
+                ))}
             </ul>
         </div>
     </div>
